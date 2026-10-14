@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Validation · Standards Explorer</title>
+  <style>
+    body { font: 14px/1.5 system-ui, sans-serif; color: #17202b; margin: 24px; max-width: 1100px; }
+    h1 { font-size: 22px; } h2 { font-size: 16px; margin-top: 24px; }
+    .ok { color: #135d33; } .bad { color: #9b1c1c; } .warn { color: #8c3c06; }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    th, td { border-bottom: 1px solid #e3e7ec; padding: 4px 6px; text-align: left; vertical-align: top; }
+    th { background: #f4f6f8; position: sticky; top: 0; }
+    td.y { color: #135d33; font-weight: 700; } td.n { color: #b9c2cc; }
+    code { font-family: ui-monospace, Consolas, monospace; }
+  </style>
+</head>
+<body>
+  <h1>Standards Explorer · data validation</h1>
+  <p>Checks the generated standards data and every curated file: codes, official wording, 2026 revisions, foundations, progression claims, relationship evidence, phenomena, and topics. Run it after any data edit. Errors must be fixed; warnings deserve a look.</p>
+  <div id="out">Running…</div>
+
+  <script src="../data/generated/standards.js"></script>
+  <script src="../data/generated/dci-progressions.js"></script>
+  <script src="../data/generated/model-curriculum.js"></script>
+  <script src="../data/vocab.js"></script>
+  <script src="../data/interpretations.js"></script>
+  <script src="../data/prior-learning.js"></script>
+  <script src="../data/relationships.js"></script>
+  <script src="../data/phenomena.js"></script>
+  <script src="../data/reflections.js"></script>
+  <script src="../data/topics.js"></script>
+  <script src="../js/core/util.js"></script>
+  <script src="../js/core/store.js"></script>
+  <script src="../js/core/practices.js"></script>
+  <script src="../js/core/engine.js"></script>
+  <script src="../js/ui/icons.js"></script>
+  <script src="../js/core/validate.js"></script>
+  <script>
+    (function () {
+      var r = SE.validate(), D = SE.data, S = SE.store, esc = SE.util.esc, h = '';
+      h += '<p class="' + (r.errors.length ? 'bad' : 'ok') + '"><b>' + (r.errors.length ? r.errors.length + ' error(s)' : 'No errors') + '</b> · ' + r.warnings.length + ' warning(s)</p>';
+      h += '<p>' + Object.keys(r.stats).map(function (k) { return k + ': <b>' + r.stats[k] + '</b>'; }).join(' · ') + '</p>';
+      if (r.errors.length) h += '<h2 class="bad">Errors</h2><ul>' + r.errors.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('') + '</ul>';
+      if (r.warnings.length) h += '<h2 class="warn">Warnings</h2><ul>' + r.warnings.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('') + '</ul>';
+      h += '<h2>Curation coverage for high school PEs</h2><p>Every PE shows its official information. Curated content adds interpretation, a progression narrative, explained relationships, phenomena, and specific reflections.</p>';
+      h += '<table><thead><tr><th>PE</th><th>Short label</th><th>Interpretation</th><th>Progression narrative</th><th>Curated relationships</th><th>Phenomena</th><th>Reflections</th><th>Model units</th></tr></thead><tbody>';
+      S.highSchool().forEach(function (s) {
+        var nrel = SE.engine.curatedFor(s.code).length, nph = SE.engine.phenomenaFor(s.code).length;
+        function yn(b, t) { return '<td class="' + (b ? 'y' : 'n') + '">' + (b ? (t || '✓') : '–') + '</td>'; }
+        h += '<tr><td><code>' + s.code + '</code></td><td>' + esc(s.title) + '</td>' + yn(D.interpretations[s.code]) + yn(D.priorLearning[s.code]) + yn(nrel, nrel) + yn(nph, nph) + yn(D.reflections.byStandard[s.code]) +
+          '<td>' + S.unitsFor(s.code).map(function (u) { return u.unit; }).join(', ') + '</td></tr>';
+      });
+      h += '</tbody></table>';
+      document.getElementById('out').innerHTML = h;
+      window.VALIDATION = r;
+    })();
+  </script>
+</body>
+</html>

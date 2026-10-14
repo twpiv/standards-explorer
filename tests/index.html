@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Standards Explorer tests</title>
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+    body { background: #fff; padding: 16px; height: auto; }
+    .summary { font: 700 16px system-ui; padding: 10px 14px; border-radius: 8px; margin-bottom: 10px; }
+    .summary.good { background: #e8f5ed; color: #135d33; } .summary.bad { background: #fde8e8; color: #9b1c1c; }
+    #results h2 { font: 650 15px system-ui; margin: 16px 0 4px; }
+    #results ul { list-style: none; padding: 0; margin: 0; font: 14px system-ui; }
+    #results li.pass { color: #135d33; } #results li.fail { color: #9b1c1c; }
+    #results pre { white-space: pre-wrap; font-size: 12px; background: #fff5f5; padding: 6px; }
+    #app-host { width: 1280px; height: 720px; border: 2px solid #ccd; position: relative; overflow: hidden; margin-top: 16px; transform-origin: 0 0; }
+    #app-host .shell { height: 720px; }
+    #app-host .landing { min-height: 720px; }
+  </style>
+</head>
+<body>
+  <h1 style="font:700 20px system-ui">Standards Explorer · automated tests</h1>
+  <p style="font:14px system-ui">Unit tests (data, engine, state) and browser-level interaction tests. The app under test is mounted below with temporary in-memory storage; your own saved exploration is not touched.</p>
+  <div id="results">Loading…</div>
+  <div id="app-host"></div>
+  <div id="print-root"></div>
+
+  <script src="../data/generated/standards.js"></script>
+  <script src="../data/generated/dci-progressions.js"></script>
+  <script src="../data/generated/model-curriculum.js"></script>
+  <script src="../data/vocab.js"></script>
+  <script src="../data/interpretations.js"></script>
+  <script src="../data/prior-learning.js"></script>
+  <script src="../data/relationships.js"></script>
+  <script src="../data/phenomena.js"></script>
+  <script src="../data/reflections.js"></script>
+  <script src="../data/topics.js"></script>
+  <script src="../js/core/util.js"></script>
+  <script src="../js/core/store.js"></script>
+  <script src="../js/core/practices.js"></script>
+  <script src="../js/core/engine.js"></script>
+  <script src="../js/core/search.js"></script>
+  <script src="../js/core/state.js"></script>
+  <script src="../js/core/validate.js"></script>
+  <script src="../js/ui/icons.js"></script>
+  <script src="../js/ui/graph.js"></script>
+  <script src="../js/ui/panels.js"></script>
+  <script src="../js/ui/views.js"></script>
+  <script src="../js/ui/exploration.js"></script>
+  <script src="../js/ui/app.js"></script>
+
+  <script src="runner.js"></script>
+  <script src="unit/data.test.js"></script>
+  <script src="unit/engine.test.js"></script>
+  <script src="unit/state.test.js"></script>
+  <script src="e2e/explorer.test.js"></script>
+  <script>
+    window.addEventListener('load', function () { T.run(document.getElementById('results')); });
+  </script>
+</body>
+</html>
