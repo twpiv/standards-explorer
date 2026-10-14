@@ -254,6 +254,37 @@
     });
   });
 
+  describe('E2E · Course switching and clearing the path', function () {
+    it('choosing a course while exploring opens that course overview', async function () {
+      mount();
+      app.explore('HS-PS2-1');
+      await waitFor(function () { return center() === 'HS-PS2-1' && q('.work-head', host()); });
+      await click('.side .seg [data-course="biology"]', host());
+      var h1 = await waitFor(function () { return q('.start h1', host()); });
+      expect(h1.textContent).toContain('Biology');
+      expect(app.route.page).toBe('start');
+      expect(q('.starter[data-code="HS-LS2-1"]', host())).toBeTruthy();
+      expect(app.state.get().trail).toEqual(['HS-PS2-1']);
+    });
+
+    it('"Clear Path" empties the trail but keeps bookmarks and notes', async function () {
+      app.explore('HS-PS2-1');
+      await waitFor(function () { return center() === 'HS-PS2-1' && q('.work-head', host()); });
+      app.state.toggleStandard('HS-PS2-1'); app.state.setNote('HS-PS2-1', 'keep me');
+      app.explore('MS-PS2-2');
+      await waitFor(function () { return center() === 'MS-PS2-2'; });
+      expect(qa('.trail .crumb', host()).length).toBe(2);
+      await click('[data-act="clear-path"]', host());
+      await waitFor(function () { return q('.start h1', host()); });
+      expect(app.state.get().trail.length).toBe(0);
+      expect(app.state.get().center).toBe(null);
+      expect(qa('.trail .crumb', host()).length).toBe(0);
+      expect(q('[data-act="clear-path"]', host()).disabled).toBe(true);
+      expect(app.state.isBookmarked('HS-PS2-1')).toBe(true);
+      expect(app.state.note('HS-PS2-1')).toBe('keep me');
+    });
+  });
+
   describe('E2E · Topic bridge', function () {
     it('"I Teach This Topic" distinguishes direct, partial, and contextual connections', async function () {
       await click('[data-act="topics"]', host());

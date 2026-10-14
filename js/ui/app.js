@@ -110,7 +110,8 @@
           var cur = app.route.page === 'explore' && i + offset === pos;
           return (i ? '<span class="sep" aria-hidden="true">›</span>' : '') + '<button class="crumb" data-act="crumb" data-i="' + (i + offset) + '" data-code="' + esc(c) + '"' + (cur ? ' aria-current="page"' : '') + ' title="' + esc(S.shortLabel(c)) + '">' + esc(c) + '</button>';
         }).join('') + '</nav>' +
-        '<div class="top-actions"><button class="btn btn-surprise" data-act="surprise" title="Show me a connection I might have missed">' + icon('sparkle') + '<span class="label-mid">Surprise Me</span></button>' +
+        '<div class="top-actions"><button class="btn" data-act="clear-path" title="Clear your path and start fresh (bookmarks and notes are kept)"' + (st.trail.length ? '' : ' disabled') + '>' + icon('reset') + '<span class="label-mid">Clear Path</span></button>' +
+        '<button class="btn btn-surprise" data-act="surprise" title="Show me a connection I might have missed">' + icon('sparkle') + '<span class="label-mid">Surprise Me</span></button>' +
         '<button class="btn" data-act="exploration">' + icon('bookmark') + '<span class="label-mid">My Exploration</span>' + (nb ? '<span class="count-badge">' + nb + '</span>' : '') + '</button>' +
         '<button class="btn btn-icon btn-ghost" data-act="intro" aria-label="About Standards Explorer" title="About">' + icon('question') + '</button></div>';
     }
@@ -338,10 +339,15 @@
         case 'resume': go({ page: 'explore', code: state.get().center }); break;
         case 'course': {
           var c = t.getAttribute('data-course'); state.setCourse(c);
-          if (app.route.page === 'landing' || app.route.page === 'start') go({ page: 'start', course: c });
-          else { renderSide(); }
+          closeSide(); app.local.surprise = null;
+          go({ page: 'start', course: c });   /* always open that course's overview */
           break;
         }
+        case 'clear-path':
+          state.clearTrail(); app.local.surprise = null; closeDialog();
+          go({ page: 'start', course: state.get().course || 'physics' });
+          toast('Path cleared. Bookmarks and notes are still saved.');
+          break;
         case 'explore': e.preventDefault(); closeDialog(); app.local.surprise = null; closeSide(); app.explore(code); break;
         case 'crumb': app.explore(code, +t.getAttribute('data-i')); break;
         case 'home-work': if (state.get().center) go({ page: 'explore', code: state.get().center }); else go({ page: 'start', course: state.get().course || 'physics' }); break;

@@ -95,6 +95,8 @@
       return true;
     }
     function clearCenter() { st.center = null; changed('visit'); }
+    /* Fresh start: empties the path and current standard. Bookmarks, notes, and history are kept. */
+    function clearTrail() { st.trail = []; st.trailPos = -1; st.center = null; changed('trail'); }
 
     function toggleStandard(code) {
       if (isBookmarked(code)) st.bookmarks.standards = st.bookmarks.standards.filter(function (b) { return b.code !== code; });
@@ -191,7 +193,7 @@
 
     return { get: get, isPersistent: isPersistent, visitedMap: visitedMap, isBookmarked: isBookmarked, isRelationshipSaved: isRelationshipSaved,
       isPhenomenonSaved: isPhenomenonSaved, isQuestionSaved: isQuestionSaved, recent: recent, note: note,
-      setCourse: setCourse, setUI: setUI, visit: visit, clearCenter: clearCenter, toggleStandard: toggleStandard, toggleRelationship: toggleRelationship,
+      setCourse: setCourse, setUI: setUI, visit: visit, clearCenter: clearCenter, clearTrail: clearTrail, toggleStandard: toggleStandard, toggleRelationship: toggleRelationship,
       togglePhenomenon: togglePhenomenon, toggleQuestion: toggleQuestion, setNote: setNote, setGeneralNote: setGeneralNote,
       markSurpriseSeen: markSurpriseSeen, seenSurprises: seenSurprises, reset: reset,
       exportObject: exportObject, exportJSON: exportJSON, importJSON: importJSON, on: on };

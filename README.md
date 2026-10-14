@@ -38,7 +38,7 @@ The whole folder is a static website. There is no backend, database, API key, lo
 2. **Google Sites:** in the Sites editor choose *Insert → Embed → By URL* and paste the GitHub Pages URL (embed the whole page and make the embed tall, about 900 px). Alternatively add a button or link that opens the tool in a new tab, which gives teachers more room on Chromebooks.
 3. **District web server:** copy the folder to any web directory.
 
-When you publish an update, raise the `?v=` number on the asset links in `index.html` (currently `?v=6`) so browsers fetch the new files instead of cached copies.
+When you publish an update, raise the `?v=` number on the asset links in `index.html` (currently `?v=8`) so browsers fetch the new files instead of cached copies.
 
 Saved explorations live in each teacher's browser (`localStorage`, key `standards-explorer-v1`) on that device. Teachers can export a JSON file to move between devices, and print or save a PDF summary.
 

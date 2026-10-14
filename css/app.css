@@ -66,6 +66,7 @@ svg.ic { width: 16px; height: 16px; flex: none; vertical-align: -3px; }
   padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 550; font-size: 14px; line-height: 1.2; min-height: 34px; text-decoration: none; }
 .btn:hover { background: var(--surface-3); }
 .btn svg { width: 16px; height: 16px; flex: none; }
+.btn:disabled { opacity: .45; cursor: default; background: var(--surface); }
 .btn-primary { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
 .btn-primary:hover { background: #163f62; }
 .btn-ghost { border-color: transparent; background: transparent; }
@@ -129,7 +130,7 @@ svg.ic { width: 16px; height: 16px; flex: none; vertical-align: -3px; }
   .shell.side-collapsed.no-center { grid-template-columns: 0 minmax(0, 1fr) 0; }
   .shell.side-collapsed .side { display: none; }
 }
-.trail { display: flex; align-items: center; gap: 4px; overflow-x: auto; min-width: 0; flex: 1; scrollbar-width: thin; padding: 4px 0; }
+.trail { display: flex; align-items: center; gap: 4px; overflow-x: auto; min-width: 110px; flex: 1; scrollbar-width: thin; padding: 4px 0; }
 .trail .crumb { font-family: var(--mono); font-size: 12.5px; font-weight: 600; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line-2); background: var(--surface-2); cursor: pointer; white-space: nowrap; color: var(--ink-2); }
 .trail .crumb[aria-current="page"] { background: var(--brand); color: #fff; border-color: var(--brand); }
 .trail .sep { color: var(--muted); font-size: 12px; }
